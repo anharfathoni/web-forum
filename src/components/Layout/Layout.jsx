@@ -10,7 +10,6 @@ function Layout() {
   const { pathname } = useLocation();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.authUser);
-  const isLoading = useSelector((state) => state.loading.isLoading);
 
   useEffect(() => {
     if (pathname !== '/login' && pathname !== '/register') {
@@ -22,14 +21,9 @@ function Layout() {
 
   return (
     <div className="h-full min-h-screen box-content">
-
       <Navbar />
+      <Loading />
       <div style={{ height: 'calc(100vh - 96px)' }}>
-        {isLoading && (
-          <div className="h-full grid place-items-center">
-            <Loading />
-          </div>
-        )}
         <Outlet />
       </div>
 

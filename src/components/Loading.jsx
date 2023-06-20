@@ -1,8 +1,11 @@
 import React from 'react';
+import LoadingBar from 'react-redux-loading-bar';
 
 function Loading() {
   return (
-    <p className="text-4xl">🌀 Loading...</p>
+    <div className="loading">
+      <LoadingBar />
+    </div>
   );
 }
 

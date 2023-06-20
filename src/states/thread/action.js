@@ -3,10 +3,10 @@
  * @TODO: Define all the actions (creator) for the thread state
  */
 import Swal from 'sweetalert2';
+import { showLoading, hideLoading } from 'react-redux-loading-bar';
 import {
   getAllThread, getDetailThread, postCommentThread, postNewThread,
 } from '../../services/thread';
-import { setLoading } from '../load/action';
 
 const ActionType = {
   RECEIVE_ALL_THREADS: 'RECEIVE_ALL_THREADS',
@@ -64,16 +64,16 @@ function receiveComment(comment) {
 function asyncGetAllThread() {
   return async (dispatch) => {
     try {
-      dispatch(setLoading(true));
+      dispatch(showLoading());
       const threads = await getAllThread();
       dispatch(receiveAllThreads(threads));
-      dispatch(setLoading(false));
     } catch (error) {
-      dispatch(setLoading(false));
       Swal.fire({
         icon: 'error',
         text: error.message,
       });
+    } finally {
+      dispatch(hideLoading());
     }
   };
 }
@@ -81,16 +81,16 @@ function asyncGetAllThread() {
 function asyncGetDetailThread(id) {
   return async (dispatch) => {
     try {
-      dispatch(setLoading(true));
+      dispatch(showLoading());
       const thread = await getDetailThread(id);
       dispatch(receiveDetailThread(thread));
-      dispatch(setLoading(false));
     } catch (error) {
-      dispatch(setLoading(false));
       Swal.fire({
         icon: 'error',
         text: error.message,
       });
+    } finally {
+      dispatch(hideLoading());
     }
   };
 }
@@ -98,16 +98,16 @@ function asyncGetDetailThread(id) {
 function asyncPostCommentThread({ threadId, content }) {
   return async (dispatch) => {
     try {
-      dispatch(setLoading(true));
+      dispatch(showLoading());
       const comment = await postCommentThread({ threadId, content });
       dispatch(receiveComment(comment));
-      dispatch(setLoading(false));
     } catch (error) {
-      dispatch(setLoading(false));
       Swal.fire({
         icon: 'error',
         text: error.message,
       });
+    } finally {
+      dispatch(hideLoading());
     }
   };
 }
@@ -115,18 +115,18 @@ function asyncPostCommentThread({ threadId, content }) {
 function asyncPostNewThread({ title, body, category }) {
   return async (dispatch) => {
     try {
-      dispatch(setLoading(true));
+      dispatch(showLoading());
       const thread = await postNewThread({ title, body, category });
       dispatch(receiveThread(thread));
-      dispatch(setLoading(false));
       return thread;
     } catch (error) {
-      dispatch(setLoading(false));
       Swal.fire({
         icon: 'error',
         text: error.message,
       });
       throw new Error(error.message);
+    } finally {
+      dispatch(hideLoading());
     }
   };
 }

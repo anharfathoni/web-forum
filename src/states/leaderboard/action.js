@@ -4,8 +4,8 @@
  */
 
 import Swal from 'sweetalert2';
+import { showLoading, hideLoading } from 'react-redux-loading-bar';
 import { getAllLeaderboard } from '../../services/leaderboard';
-import { setLoading } from '../load/action';
 
 const ActionType = {
   RECEIVE_LEADERBOARD: 'RECEIVE_LEADERBOARD',
@@ -23,16 +23,16 @@ function receiveLeaderboard(leaderboards) {
 function asyncGetAllLeaderboard() {
   return async (dispatch) => {
     try {
-      dispatch(setLoading(true));
+      dispatch(showLoading());
       const leaderboards = await getAllLeaderboard();
       dispatch(receiveLeaderboard(leaderboards));
-      dispatch(setLoading(false));
     } catch (error) {
-      dispatch(setLoading(false));
       Swal.fire({
         icon: 'error',
         text: error.message,
       });
+    } finally {
+      dispatch(hideLoading());
     }
   };
 }

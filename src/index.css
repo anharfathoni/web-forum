@@ -29,3 +29,8 @@ code {
   overflow: hidden;
   white-space: nowrap;
 }
+
+.loading {
+  position: sticky;
+  top: 0;
+}

@@ -4,8 +4,8 @@
  */
 
 import Swal from 'sweetalert2';
+import { showLoading, hideLoading } from 'react-redux-loading-bar';
 import { getAllUsers } from '../../services/users';
-import { setLoading } from '../load/action';
 
 const ActionType = {
   RECEIVE_USERS: 'RECEIVE_USERS',
@@ -23,16 +23,16 @@ function receiveUsers(users) {
 function asyncGetAllUser() {
   return async (dispatch) => {
     try {
-      dispatch(setLoading(true));
+      dispatch(showLoading());
       const users = await getAllUsers();
       dispatch(receiveUsers(users));
-      dispatch(setLoading(false));
     } catch (error) {
-      dispatch(setLoading(false));
       Swal.fire({
         icon: 'error',
         text: error.message,
       });
+    } finally {
+      dispatch(hideLoading());
     }
   };
 }
